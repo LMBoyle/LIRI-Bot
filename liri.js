@@ -65,6 +65,11 @@ function displaySpotifyInfo() {
 
   var song = process.argv[3];
 
+  if (song === undefined) {
+    song = "The Sign"
+  }
+  console.log(song)
+
   spotify.search({
     type: "track",
     query: song
@@ -72,8 +77,14 @@ function displaySpotifyInfo() {
     if (err) {
       return console.log("Error Occured: " + err);
     }
-    // Data
-    var data = data.tracks.items[0];
+    else if (song === "The Sign") {
+      // Data
+      var data = data.tracks.items[2];
+    }
+    else {
+      // Data
+      var data = data.tracks.items[0];
+    }
     // Artist(s)
     var artist = data.artists[0].name
     // TODO Song Name
