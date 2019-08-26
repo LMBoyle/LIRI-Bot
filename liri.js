@@ -24,15 +24,39 @@ else if (input === "do-what-it-says") {
 }
 
 // TODO bands API
-// "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp"
 function displayConcertInfo() {
   console.log("Concert This");
 
-  // TODO Venue
-  // TODO Venue Location
-  // TODO Event Date
-  // TODO Format Event Date
+  var str = process.argv[3];
+  var artist = str.replace("-", "%20");
+
+  var queryURL = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp";
+
+  axios({
+    url: queryURL,
+    method: "get"
+  }).then(function(response) {
+    console.log(response.data[0])
+    var response = response.data[0];
+
+    // TODO Venue
+    var venue = response.venue.name;
+    // TODO Venue Location
+    var location = response.venue.city;
+    // TODO Event Date
+    var date = response.datetime;
+    // TODO Format Event Date
+    var formatDate = date;
+
+    // Display
+    console.log("Venue: ", venue)
+    console.log("Venue Location: ", location)
+    console.log("Event Date: ", formatDate)
+  });
 }
+
+
+
 
 // TODO spotify API
 // TODO "The Sign" by Ace of Base
