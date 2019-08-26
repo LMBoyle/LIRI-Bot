@@ -3,6 +3,7 @@ require("dotenv").config();
 var keys = require("./keys.js");
 // var spotify = new Spotify(keys.spotify);
 const axios = require('axios');
+var moment = require('moment');
 
 var input = process.argv[2];
 
@@ -36,17 +37,15 @@ function displayConcertInfo() {
     url: queryURL,
     method: "get"
   }).then(function(response) {
-    console.log(response.data[0])
     var response = response.data[0];
-
-    // TODO Venue
+    // Venue
     var venue = response.venue.name;
-    // TODO Venue Location
+    // Venue Location
     var location = response.venue.city;
-    // TODO Event Date
+    // Event Date
     var date = response.datetime;
-    // TODO Format Event Date
-    var formatDate = date;
+    // Format Event Date
+    var formatDate = moment(date).format("MM/DD/YYYY");
 
     // Display
     console.log("Venue: ", venue)
