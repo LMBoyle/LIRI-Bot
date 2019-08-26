@@ -1,30 +1,29 @@
 require("dotenv").config();
 
 var keys = require("./keys.js");
-// var spotify = new Spotify(keys.spotify);
 const axios = require('axios');
 var moment = require('moment');
 
 var input = process.argv[2];
 
-// concert-this
+// Concert-this
 if (input === "concert-this") {
   displayConcertInfo();
 }
-// spotify-this-song
+// Spotify-this-song
 else if (input === "spotify-this-song") {
   displaySpotifyInfo();
 }
-// movie-this
+// Movie-this
 else if (input === "movie-this") {
   displayMovieInfo()
 }
-// do-what-it-says
+// Do-what-it-says
 else if (input === "do-what-it-says") {
   displayWhatItSays();
 }
 
-// TODO bands API
+// Bands API
 function displayConcertInfo() {
   console.log("Concert This");
 
@@ -54,18 +53,46 @@ function displayConcertInfo() {
   });
 }
 
-
-
-
-// TODO spotify API
+// Spotify API
 // TODO "The Sign" by Ace of Base
 function displaySpotifyInfo() {
-  console.log("Spotify This");
+  var Spotify = require('node-spotify-api');
 
-  // TODO Artist(s)
-  // TODO Song Name
-  // TODO Preview Link
-  // TODO Album
+  var spotify = new Spotify({
+    id: keys.spotify.id,
+    secret: keys.spotify.secret
+  });
+
+  var song = process.argv[3];
+
+  spotify.search({
+    type: "track",
+    query: song
+  }, function(err, data) {
+    if (err) {
+      return console.log("Error Occured: " + err);
+    }
+    // Data
+    var data = data.tracks.items[0];
+    // Artist(s)
+    var artist = data.artists[0].name
+    // TODO Song Name
+    var songName = data.name
+    // TODO Preview Link
+    var link = data.external_urls.spotify;
+    // TODO Album
+    var album = data.album.name
+
+    // Console Logs
+    console.log("Artist(s): ", artist);
+    console.log("Song: ", songName);
+    console.log("Preview: ", link);
+    console.log("Album: ", album);
+  })
+
+
+  
+
 }
 
 // OMDB API
@@ -108,8 +135,9 @@ function displayMovieInfo() {
     console.log("Plot: ", plot)
     console.log("Actor(s): ", actor)
   });
-}
+};
 
+// Do What It Says
 function displayWhatItSays() {
   console.log("Do What It Says");
 
