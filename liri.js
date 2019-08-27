@@ -138,6 +138,11 @@ function displaySpotifyInfo(song) {
 // OMDB API
 function displayMovieInfo(movie) {
   console.log("Movie This");
+  
+  // Default to Mr. Nobody
+  if (movie === undefined) {
+    movie = "Mr Nobody"
+  }
 
   var queryURL = "https://www.omdbapi.com/?t=" + movie + "&apikey=trilogy";
 
@@ -148,6 +153,7 @@ function displayMovieInfo(movie) {
     if (err) {
       return console.log("Error: ", err);
     }
+
     // Response
     var response = data.data
     // Title
