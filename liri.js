@@ -1,4 +1,5 @@
 require("dotenv").config();
+var fs = require("fs");
 
 var keys = require("./keys.js");
 const axios = require('axios');
@@ -28,14 +29,23 @@ function displayConcertInfo() {
   console.log("Concert This");
 
   var str = process.argv[3];
-  var artist = str.replace("-", "%20");
+  var artist = str.replace("-", "%20").replace(" ", "%20");
 
   var queryURL = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp";
+  console.log("Artist: ", artist)
 
   axios({
     url: queryURL,
     method: "get"
-  }).then(function(response) {
+  }).then(function(response, err) {
+    if (err){
+      console.log("Error: ", err);
+    }
+    else if (response === undefined){
+      console.log("No Upcoming Concerts")
+    }
+
+    // Response
     var response = response.data[0];
     // Venue
     var venue = response.venue.name;
@@ -45,6 +55,18 @@ function displayConcertInfo() {
     var date = response.datetime;
     // Format Event Date
     var formatDate = moment(date).format("MM/DD/YYYY");
+    // Text
+    var text = "======Concert======\nVenue: " + venue + "\nLocation: " + location + "\nDate: " + formatDate + "\n";
+
+    // Write to File
+    fs.appendFile("log.txt", text, function(err) {
+      if (err) {
+        console.log("Error: ", err)
+      }
+      else {
+        console.log("Content Added")
+      }
+    })
 
     // Display
     console.log("Venue: ", venue)
@@ -54,7 +76,6 @@ function displayConcertInfo() {
 }
 
 // Spotify API
-// TODO "The Sign" by Ace of Base
 function displaySpotifyInfo() {
   var Spotify = require('node-spotify-api');
 
@@ -65,45 +86,42 @@ function displaySpotifyInfo() {
 
   var song = process.argv[3];
 
+  // Default to "The Sign" by Ace of Base
   if (song === undefined) {
     song = "The Sign"
   }
-  console.log(song)
 
   spotify.search({
     type: "track",
     query: song
-  }, function(err, data) {
+  }, function(err, response) {
     if (err) {
       return console.log("Error Occured: " + err);
     }
     else if (song === "The Sign") {
       // Data
-      var data = data.tracks.items[2];
+      var data = response.tracks.items[2];
     }
     else {
       // Data
-      var data = data.tracks.items[0];
+      var data = response.tracks.items[0];
     }
+
     // Artist(s)
-    var artist = data.artists[0].name
-    // TODO Song Name
+    for (a = 0; a < data.artists.length; a++) {
+      var artist = data.artists[a].name
+      console.log("Artist(s): ", artist)
+    };
+    // Song Name
     var songName = data.name
-    // TODO Preview Link
-    var link = data.external_urls.spotify;
-    // TODO Album
-    var album = data.album.name
-
-    // Console Logs
-    console.log("Artist(s): ", artist);
     console.log("Song: ", songName);
+    // Preview Link
+    var link = data.external_urls.spotify;
     console.log("Preview: ", link);
+    // Album
+    var album = data.album.name
     console.log("Album: ", album);
-  })
-
-
-  
-
+  });
 }
 
 // OMDB API
@@ -116,9 +134,12 @@ function displayMovieInfo() {
   axios({
     url: queryURL,
     method: "get"
-  }).then(function(response) {
-    var response = response.data
+  }).then(function(err, response) {
+    if (err) {
+      console.log("Error: ", err)
+    }
 
+    var response = response.data
     // Title
     var title = response.Title;
     // Year
