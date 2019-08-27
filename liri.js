@@ -39,37 +39,39 @@ function displayConcertInfo(str) {
     if (err){
       console.log("Error: ", err);
     }
-    else if (data === undefined){
-      console.log("No Upcoming Concerts")
-    }
-    
     // Response
     var response = data.data[0];
-    // Venue
-    var venue = response.venue.name;
-    // Venue Location
-    var location = response.venue.city;
-    // Event Date
-    var date = response.datetime;
-    // Format Event Date
-    var formatDate = moment(date).format("MM/DD/YYYY");
-    // Text
-    var text = "======Concert======\nVenue: " + venue + "\nLocation: " + location + "\nDate: " + formatDate + "\n";
 
-    // Write to File
-    fs.appendFile("log.txt", text, function(err) {
-      if (err) {
-        console.log("Error: ", err)
-      }
-      else {
-        console.log("Content Added")
-      }
-    })
+    if (response === undefined) {
+      console.log("No Upcoming Concerts")
+    }
+    else {
+      // Venue
+      var venue = response.venue.name;
+      // Venue Location
+      var location = response.venue.city;
+      // Event Date
+      var date = response.datetime;
+      // Format Event Date
+      var formatDate = moment(date).format("MM/DD/YYYY");
+      // Text
+      var text = "======Concert======\nVenue: " + venue + "\nLocation: " + location + "\nDate: " + formatDate + "\n";
 
-    // Display
-    console.log("Venue: ", venue)
-    console.log("Venue Location: ", location)
-    console.log("Event Date: ", formatDate)
+      // Write to File
+      fs.appendFile("log.txt", text, function(err) {
+        if (err) {
+          console.log("Error: ", err)
+        }
+        else {
+          console.log("Content Added")
+        }
+      })
+
+      // Display
+      console.log("Venue: ", venue)
+      console.log("Venue Location: ", location)
+      console.log("Event Date: ", formatDate)
+    }
   });
 }
 
