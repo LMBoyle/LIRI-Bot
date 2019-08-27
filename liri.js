@@ -13,7 +13,7 @@ if (input === "concert-this") {
 }
 // Spotify-this-song
 else if (input === "spotify-this-song") {
-  displaySpotifyInfo();
+  displaySpotifyInfo(process.argv[3]);
 }
 // Movie-this
 else if (input === "movie-this") {
@@ -76,15 +76,13 @@ function displayConcertInfo() {
 }
 
 // Spotify API
-function displaySpotifyInfo() {
+function displaySpotifyInfo(song) {
   var Spotify = require('node-spotify-api');
 
   var spotify = new Spotify({
     id: keys.spotify.id,
     secret: keys.spotify.secret
   });
-
-  var song = process.argv[3];
 
   // Default to "The Sign" by Ace of Base
   if (song === undefined) {
@@ -110,6 +108,7 @@ function displaySpotifyInfo() {
     // Artist(s)
     for (a = 0; a < data.artists.length; a++) {
       var artist = data.artists[a].name
+      
       console.log("Artist(s): ", artist)
     };
     // Song Name
@@ -174,4 +173,16 @@ function displayWhatItSays() {
   console.log("Do What It Says");
 
   // TODO random.txt
+  fs.readFile("random.txt", "utf8", function(error, data) {
+    if (error) {
+      return console.log(error);
+    }
+
+    console.log(data);
+
+    var dataArr = data.split(",");
+
+    displaySpotifyInfo(dataArr[1])  
+  });
+  
 }
