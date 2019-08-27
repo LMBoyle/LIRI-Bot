@@ -111,12 +111,26 @@ function displaySpotifyInfo(song) {
     };
     // Song Name
     var songName = data.name
-    console.log("Song: ", songName);
     // Preview Link
     var link = data.external_urls.spotify;
-    console.log("Preview: ", link);
     // Album
     var album = data.album.name
+    // Text
+    var text = "======Song======\nSong: " + songName + "\nPreview: " + link + "\nAlbum: " + album + "\n";
+
+    // Write to File
+    fs.appendFile("log.txt", text, function(err) {
+      if (err) {
+        console.log("Error: ", err)
+      }
+      else {
+        console.log("Content Added")
+      }
+    })
+
+    // Display
+    console.log("Song: ", songName);
+    console.log("Preview: ", link);
     console.log("Album: ", album);
   });
 }
@@ -152,12 +166,24 @@ function displayMovieInfo(movie) {
     var plot = response.Plot;
     // Actors
     var actor = response.Actors;
+    // Text
+    var text = "======Movie======\nTitle: " + title + "\nYear Released: " + released + "\nIMDB Rating: " + imdb + "\nRotten Tomatoes Rating: " + tomatoes + "\nCountry Produced: " + country + "\nPlot: " + plot + "\nActor(s): " + actor + "\n";
+
+    // Write to File
+    fs.appendFile("log.txt", text, function(err) {
+      if (err) {
+        console.log("Error: ", err)
+      }
+      else {
+        console.log("Content Added")
+      }
+    })
 
     // Display
     console.log("Title: ", title)
     console.log("Year Released: ", released)
     console.log("IMDB Rating: ", imdb)
-    console.log("Rotton Tomato Rating: ", tomatoes)
+    console.log("Rotten Tomatoes Rating: ", tomatoes)
     console.log("Country Produced: ", country)
     console.log("Language: ", lang)
     console.log("Plot: ", plot)
