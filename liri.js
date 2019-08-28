@@ -35,10 +35,7 @@ function displayConcertInfo(str) {
   axios({
     url: queryURL,
     method: "get"
-  }).then(function(data, err) {
-    if (err){
-      console.log("Error: ", err);
-    }
+  }).then(function(data) {
     // Response
     var response = data.data[0];
 
@@ -72,6 +69,8 @@ function displayConcertInfo(str) {
       console.log("Venue Location: ", location)
       console.log("Event Date: ", formatDate)
     }
+  }).catch(function(err){
+    console.log("Error: ", err);
   });
 }
 
@@ -92,11 +91,8 @@ function displaySpotifyInfo(song) {
   spotify.search({
     type: "track",
     query: song
-  }, function(err, data) {
-    if (err) {
-      return console.log("Error: " + err);
-    }
-    else if (song === "The Sign") {
+  }).then(function(data) {
+    if (song === "The Sign") {
       // Data
       var data = data.tracks.items[2];
     }
@@ -134,6 +130,8 @@ function displaySpotifyInfo(song) {
     console.log("Song: ", songName);
     console.log("Preview: ", link);
     console.log("Album: ", album);
+  }).catch(function(err){
+    console.log("Error: ", err);
   });
 }
 
@@ -151,11 +149,7 @@ function displayMovieInfo(movie) {
   axios({
     url: queryURL,
     method: "get"
-  }).then(function(data, err) {
-    if (err) {
-      return console.log("Error: ", err);
-    }
-
+  }).then(function(data) {
     // Response
     var response = data.data
     // Title
@@ -196,6 +190,8 @@ function displayMovieInfo(movie) {
     console.log("Language: ", lang)
     console.log("Plot: ", plot)
     console.log("Actor(s): ", actor)
+  }).catch(function(err){
+    console.log("Error: ", err);
   });
 };
 
