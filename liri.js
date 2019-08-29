@@ -9,15 +9,15 @@ var input = process.argv[2];
 
 // Concert-this
 if (input === "concert-this") {
-  displayConcertInfo(process.argv[3]);
+  displayConcertInfo();
 }
 // Spotify-this-song
 else if (input === "spotify-this-song") {
-  displaySpotifyInfo(process.argv[3]);
+  displaySpotifyInfo();
 }
 // Movie-this
 else if (input === "movie-this") {
-  displayMovieInfo(process.argv[3])
+  displayMovieInfo()
 }
 // Do-what-it-says
 else if (input === "do-what-it-says") {
@@ -25,10 +25,10 @@ else if (input === "do-what-it-says") {
 }
 
 // Bands API
-function displayConcertInfo(str) {
+function displayConcertInfo() {
   console.log("Concert This");
 
-  var artist = str.replace("-", "%20").replace(" ", "%20");
+  var artist = process.argv.slice(3).join("%20");
 
   var queryURL = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp";
 
@@ -75,8 +75,18 @@ function displayConcertInfo(str) {
 }
 
 // Spotify API
-function displaySpotifyInfo(song) {
+function displaySpotifyInfo() {
+  console.log("Spotify This")
+
   var Spotify = require('node-spotify-api');
+  
+
+  if (process.argv[3] === undefined) {
+    var song = undefined
+  }
+  else {
+    var song = process.argv.slice(3).join(" ");
+  }
 
   var spotify = new Spotify({
     id: keys.spotify.id,
@@ -94,7 +104,7 @@ function displaySpotifyInfo(song) {
   }).then(function(data) {
     if (song === "The Sign") {
       // Data
-      var data = data.tracks.items[2];
+      var data = data.tracks.items[3];
     }
     else {
       // Data
@@ -136,8 +146,15 @@ function displaySpotifyInfo(song) {
 }
 
 // OMDB API
-function displayMovieInfo(movie) {
+function displayMovieInfo() {
   console.log("Movie This");
+  
+  if (process.argv[3] === undefined) {
+    var movie = undefined
+  }
+  else {
+    var movie = process.argv.slice(3).join(" ");
+  }
   
   // Default to Mr. Nobody
   if (movie === undefined) {
