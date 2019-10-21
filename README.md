@@ -16,7 +16,7 @@ How to use node.js for retrieving and showing data
 
 ## Languages/Technologies 
 * JavaScript
-* node.js
+* Node.js
 
 ## Demo
 ![Demo Gif](liriDemo.gif)
