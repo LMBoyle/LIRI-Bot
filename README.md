@@ -33,7 +33,7 @@ All the data is also saved in log.txt.
 
 ## Built With...
 * JavaScript
-* node.js
+* Node.js
 * Bands in Town API
 * Node Spotify API
 * OMDB API
