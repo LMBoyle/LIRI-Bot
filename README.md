@@ -19,7 +19,7 @@ Add the following to your .env file:
     SPOTIFY_SECRET=<your spotify secret here>
 
 ## Instructions
-Start each line with `$ node liri.js` and use the commands below to search.
+Start each line with `node liri.js` and use the commands below to search.
 
 To look up a band enter `concert-this` followed by the name of an artist or band.
 
